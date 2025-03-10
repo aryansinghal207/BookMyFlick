@@ -1,0 +1,67 @@
+[
+  {
+    "id": "2025-03-02T11:48:07.828Z",
+    "name": "Avengers: DoomsDay",
+    "date": "2024-03-20",
+    "time": "18:30",
+    "totalSeats": 100,
+    "availableSeats": 93,
+    "price": 250,
+    "description": "Marvel's epic conclusion",
+    "status": "active"
+  },
+  {
+    "id": "2025-03-02T14:23:09.573Z",
+    "name": "Spider-Man",
+    "date": "2024-04-20",
+    "time": "13:30",
+    "totalSeats": 51,
+    "availableSeats": 0,
+    "price": 120,
+    "description": "Marvel's epic new Spider Man Movie",
+    "status": "active",
+    "updateData": {
+      "name": "Spider-Man",
+      "date": "2024-04-20",
+      "time": "13:30",
+      "totalSeats": 101,
+      "availableSeats": 50,
+      "price": 120,
+      "description": "Marvel's epic new Spider Man Movie",
+      "status": "active"
+    }
+  },
+  {
+    "id": "2025-03-03T09:13:42.415Z",
+    "name": "Avengers: DoomsDay",
+    "date": "2024-03-20",
+    "time": "18:30",
+    "totalSeats": 100,
+    "availableSeats": 100,
+    "price": 250,
+    "description": "Marvel's epic conclusion",
+    "status": "active"
+  },
+  {
+    "id": "2025-03-03T09:15:45.040Z",
+    "name": "Khiladi 786",
+    "date": "2024-6-29",
+    "time": "10:30",
+    "totalSeats": 100,
+    "availableSeats": 100,
+    "price": 200,
+    "description": "A Movie By akshay Kumar",
+    "status": "active"
+  },
+  {
+    "id": "2025-03-05T11:06:42.714Z",
+    "name": "1984",
+    "date": "2022-03-09",
+    "time": "16:30",
+    "totalSeats": 50,
+    "availableSeats": 50,
+    "price": 100,
+    "description": "The movie is based on 1984 scam",
+    "status": "active"
+  }
+]

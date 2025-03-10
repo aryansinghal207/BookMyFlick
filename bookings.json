@@ -1,0 +1,90 @@
+[
+  {
+    "id": "2025-03-02T10:44:51.600Z",
+    "showId": "2025-03-02T10:43:47.394Z",
+    "showName": "Avengers: Endgame",
+    "numberOfSeats": 5,
+    "totalAmount": 79.95,
+    "userDetails": {
+      "userId": "user123",
+      "name": "John Doe",
+      "email": "john@example.com"
+    },
+    "bookingDate": "2025-03-02T10:44:51.601Z",
+    "status": "cancelled"
+  },
+  {
+    "id": "2025-03-02T14:37:01.675Z",
+    "showId": "2025-03-02T14:23:09.573Z",
+    "showName": "Spider-Man",
+    "numberOfSeats": 51,
+    "totalAmount": 6120,
+    "userDetails": {
+      "userId": "User0001",
+      "name": "Aryan Singhal",
+      "email": "aryansinghal987@gmail.com",
+      "phone": "987654321"
+    },
+    "bookingDate": "2025-03-02T14:37:01.675Z",
+    "status": "confirmed"
+  },
+  {
+    "id": "2025-03-02T17:09:32.303Z",
+    "showId": "2025-03-02T11:48:07.828Z",
+    "showName": "Avengers: DoomsDay",
+    "numberOfSeats": 3,
+    "totalAmount": 750,
+    "userDetails": {
+      "userId": "123",
+      "name": "John Doe",
+      "email": "john@example.com"
+    },
+    "bookingDate": "2025-03-02T17:09:32.303Z",
+    "status": "confirmed"
+  },
+  {
+    "id": "2025-03-03T09:09:03.156Z",
+    "showId": "2025-03-02T11:48:07.828Z",
+    "showName": "Avengers: DoomsDay",
+    "numberOfSeats": 4,
+    "totalAmount": 1000,
+    "userDetails": {
+      "userId": "User0002",
+      "name": "Aryan",
+      "email": "aryan0133.be23@gmal.com",
+      "phone": "9876543212"
+    },
+    "bookingDate": "2025-03-03T09:09:03.156Z",
+    "status": "confirmed"
+  },
+  {
+    "id": "2025-03-05T11:16:02.071Z",
+    "showId": "2025-03-03T09:15:45.040Z",
+    "showName": "Khiladi 786",
+    "numberOfSeats": 5,
+    "totalAmount": 1000,
+    "userDetails": {
+      "userId": "User0001",
+      "name": "Maneet",
+      "email": "maneet1396.be23@chitkara.edu.in",
+      "phone": "99876XXXX"
+    },
+    "bookingDate": "2025-03-05T11:16:02.071Z",
+    "status": "cancelled"
+  },
+  {
+    "id": "2025-03-08T16:36:44.445Z",
+    "showId": "2025-03-08T16:34:21.065Z",
+    "showName": "Khiladi 786",
+    "numberOfSeats": 4,
+    "totalAmount": 800,
+    "userDetails": {
+      "userId": "User001",
+      "name": "Aryan",
+      "email": "aryansinghal@gmail.com",
+      "phone": "87654321"
+    },
+    "bookingDate": "2025-03-08T16:36:44.446Z",
+    "status": "cancelled"
+  }
+]
