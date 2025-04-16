@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookMyFlick - Shows & Bookings</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1><i class="fas fa-film"></i> BookMyFlick</h1>
+                <div class="location-selector">
+                    <select id="citySelect">
+                        <option value="">Select City</option>
+                    </select>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <section id="shows" class="content-section active">
+                <div class="section-header">
+                    <h2>Available Shows</h2>
+                </div>
+                <div class="shows-grid" id="showsList">
+                    <!-- Shows will be populated here -->
+                </div>
+            </section>
+
+            <!-- Add Bookings Section -->
+            <section id="bookings" class="bookings-section">
+                <div class="bookings-header">
+                    <h2>My Bookings</h2>
+                    <button class="refresh-btn" onclick="fetchBookings()">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+                <div id="bookingsGrid" class="bookings-grid">
+                    <!-- Bookings will be populated here -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modalShowName"></h2>
+            <div class="show-details">
+                <p id="modalTheater"></p>
+                <p id="modalDateTime"></p>
+                <p id="modalPrice"></p>
+            </div>
+            
+            <div class="screen"></div>
+            
+            <div id="seatLayout" class="seat-layout"></div>
+            
+            <div class="seat-info">
+                <div class="seat-type">
+                    <div class="indicator available"></div>
+                    <span>Available</span>
+                </div>
+                <div class="seat-type">
+                    <div class="indicator premium"></div>
+                    <span>Premium</span>
+                </div>
+                <div class="seat-type">
+                    <div class="indicator booked"></div>
+                    <span>Booked</span>
+                </div>
+                <div class="seat-type">
+                    <div class="indicator selected"></div>
+                    <span>Selected</span>
+                </div>
+            </div>
+            
+            <div id="selectedSeatsInfo"></div>
+            
+            <form id="bookingForm" class="booking-form" onsubmit="handleBooking(event)">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <input type="tel" name="phone" placeholder="Your Phone" required>
+                <button type="submit" id="bookBtn" disabled>Confirm Booking</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Ticket View Modal -->
+    <div id="ticketModal" class="modal">
+        <div class="modal-content ticket-modal">
+            <span class="close" onclick="closeTicketModal()">&times;</span>
+            <div class="ticket-container">
+                <div class="ticket-header">
+                    <i class="fas fa-film"></i>
+                    <h2>Movie Ticket</h2>
+                </div>
+                <div class="ticket-body">
+                    <div class="ticket-info">
+                        <div class="movie-details">
+                            <h3 id="ticketMovieName"></h3>
+                            <p id="ticketDateTime"></p>
+                        </div>
+                        <div class="theater-details">
+                            <h4>Theater Information</h4>
+                            <p id="ticketTheaterName"></p>
+                            <p id="ticketTheaterLocation"></p>
+                        </div>
+                        <div class="booking-details">
+                            <div class="detail-row">
+                                <span>Booking ID:</span>
+                                <span id="ticketBookingId"></span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Seats:</span>
+                                <span id="ticketSeats"></span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Amount Paid:</span>
+                                <span id="ticketAmount"></span>
+                            </div>
+                        </div>
+                        <div class="user-details">
+                            <div class="detail-row">
+                                <span>Name:</span>
+                                <span id="ticketUserName"></span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Email:</span>
+                                <span id="ticketUserEmail"></span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Phone:</span>
+                                <span id="ticketUserPhone"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ticket-footer">
+                        <div class="qr-code" id="ticketQR">
+                            <!-- QR code will be generated here -->
+                        </div>
+                        <p class="ticket-note">Please show this ticket at the counter</p>
+                    </div>
+                </div>
+            </div>
+            <div class="ticket-actions">
+                <button class="download-ticket" onclick="downloadTicket()">
+                    <i class="fas fa-download"></i> Download Ticket
+                </button>
+                <button class="print-ticket" onclick="window.print()">
+                    <i class="fas fa-print"></i> Print Ticket
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let cities = [];
+        let shows = [];
+        let selectedSeats = [];
+        let currentShowId = null;
+        let currentCityId = null;
+
+        // DOM Elements
+        const citySelect = document.getElementById('citySelect');
+        const showsList = document.getElementById('showsList');
+        const modal = document.getElementById('bookingModal');
+        const closeBtn = document.querySelector('.close');
+        const bookingsGrid = document.getElementById('bookingsGrid');
+
+        // Bookings Functions
+        async function fetchBookings() {
+            const bookingsGrid = document.getElementById('bookingsGrid');
+            console.log('Starting to fetch bookings...');
+            
+            try {
+                bookingsGrid.innerHTML = '<div class="bookings-loading"><div class="loading-spinner"></div><p>Loading bookings...</p></div>';
+                
+                const userId = "user123";
+                console.log('Fetching bookings for user:', userId);
+                
+                const response = await fetch(`http://localhost:5001/bookings/${userId}`);
+                console.log('Bookings API response status:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const bookings = await response.json();
+                console.log('Received bookings data:', bookings);
+                
+                // Filter out cancelled bookings
+                const activeBookings = bookings.filter(booking => booking.status === "confirmed");
+                
+                if (!activeBookings || activeBookings.length === 0) {
+                    console.log('No active bookings found');
+                    bookingsGrid.innerHTML = `
+                        <div class="no-bookings">
+                            <i class="fas fa-ticket-alt"></i>
+                            <p>No active bookings found. Book a show to get started!</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                console.log('Rendering bookings:', activeBookings.length, 'active bookings found');
+                const bookingsHTML = activeBookings.map(booking => {
+                    console.log('Processing booking:', booking);
+                    return `
+                        <div class="booking-card">
+                            <h3 class="booking-movie-title">
+                                ${booking.showName || 'Unknown Show'}
+                                <span class="booking-status ${booking.status}">${booking.status}</span>
+                            </h3>
+                            <div class="booking-info">
+                                <div class="booking-detail">
+                                    <span class="detail-label">Booking ID</span>
+                                    <span class="detail-value">${booking.bookingId || 'N/A'}</span>
+                                </div>
+                                <div class="booking-detail">
+                                    <span class="detail-label">Date & Time</span>
+                                    <span class="detail-value">${booking.showDateTime || 'N/A'}</span>
+                                </div>
+                                <div class="booking-detail">
+                                    <span class="detail-label">Theater</span>
+                                    <span class="detail-value">${booking.theaterName || 'N/A'}</span>
+                                </div>
+                                <div class="booking-detail">
+                                    <span class="detail-label">Seats</span>
+                                    <span class="detail-value">${booking.seats ? booking.seats.join(', ') : 'N/A'}</span>
+                                </div>
+                                <div class="booking-detail">
+                                    <span class="detail-label">Amount Paid</span>
+                                    <span class="detail-value">₹${booking.totalAmount || '0'}</span>
+                                </div>
+                            </div>
+                            <div class="booking-actions">
+                                <button class="view-ticket-btn" onclick="viewTicket('${booking.bookingId}')">
+                                    <i class="fas fa-ticket-alt"></i> View Ticket
+                                </button>
+                                <button class="cancel-booking-btn" onclick="cancelBooking('${booking.bookingId}')">
+                                    <i class="fas fa-times"></i> Cancel
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+                console.log('Setting bookings HTML');
+                bookingsGrid.innerHTML = bookingsHTML;
+                
+            } catch (error) {
+                console.error('Error fetching bookings:', error);
+                console.error('Error details:', {
+                    message: error.message,
+                    stack: error.stack
+                });
+                bookingsGrid.innerHTML = `
+                    <div class="no-bookings">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p>Error loading bookings. Please try again.</p>
+                        <p class="error-details">${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function cancelBooking(bookingId) {
+            if (!confirm('Are you sure you want to cancel this booking?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:5001/cancel-booking`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ bookingId })
+                });
+
+                const result = await response.json();
+                console.log('Cancel booking response:', result);
+
+                if (response.ok) {
+                    alert('Booking cancelled successfully!');
+                    fetchBookings(); // Refresh the bookings list
+                    if (currentCityId) {
+                        fetchShows(currentCityId); // Refresh shows to update availability
+                    }
+                } else {
+                    alert(`Failed to cancel booking: ${result.message || 'Please try again.'}`);
+                }
+            } catch (error) {
+                console.error('Error cancelling booking:', error);
+                alert('Error cancelling booking. Please try again.');
+            }
+        }
+
+        async function viewTicket(bookingId) {
+            try {
+                const userId = "user123"; // For demo purposes
+                const response = await fetch(`http://localhost:5001/bookings/${userId}`);
+                const bookings = await response.json();
+                const booking = bookings.find(b => b.bookingId === bookingId);
+
+                if (!booking) {
+                    alert('Booking not found!');
+                    return;
+                }
+
+                // Get theater details
+                const theaterResponse = await fetch(`http://localhost:5001/cities`);
+                const cities = await theaterResponse.json();
+                const city = cities.find(c => c.id === booking.cityId);
+                const theater = city?.theaters.find(t => t.id === booking.theaterId);
+
+                // Populate ticket modal
+                document.getElementById('ticketMovieName').textContent = booking.showName;
+                document.getElementById('ticketDateTime').textContent = booking.showDateTime;
+                document.getElementById('ticketTheaterName').textContent = booking.theaterName;
+                document.getElementById('ticketTheaterLocation').textContent = theater ? `${theater.location}, ${city.name}` : 'Location not available';
+                document.getElementById('ticketBookingId').textContent = booking.bookingId;
+                document.getElementById('ticketSeats').textContent = booking.seats.join(', ');
+                document.getElementById('ticketAmount').textContent = `₹${booking.totalAmount}`;
+                document.getElementById('ticketUserName').textContent = booking.userDetails.name;
+                document.getElementById('ticketUserEmail').textContent = booking.userDetails.email;
+                document.getElementById('ticketUserPhone').textContent = booking.userDetails.phone;
+
+                // Generate QR code with booking details
+                const qrContainer = document.getElementById('ticketQR');
+                const qrData = {
+                    bookingId: booking.bookingId,
+                    showName: booking.showName,
+                    showDateTime: booking.showDateTime,
+                    theaterName: booking.theaterName,
+                    seats: booking.seats.join(', '),
+                    userDetails: {
+                        name: booking.userDetails.name,
+                        email: booking.userDetails.email,
+                        phone: booking.userDetails.phone
+                    }
+                };
+                const qrDataString = JSON.stringify(qrData);
+                qrContainer.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrDataString)}" alt="Ticket QR Code">`;
+
+                // Show the modal
+                document.getElementById('ticketModal').style.display = 'block';
+            } catch (error) {
+                console.error('Error viewing ticket:', error);
+                alert('Error loading ticket details. Please try again.');
+            }
+        }
+
+        function closeTicketModal() {
+            document.getElementById('ticketModal').style.display = 'none';
+        }
+
+        function downloadTicket() {
+            // This is a placeholder function. In a real application, 
+            // you would generate a PDF or image of the ticket
+            alert('Download functionality will be implemented soon!');
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const ticketModal = document.getElementById('ticketModal');
+            const bookingModal = document.getElementById('bookingModal');
+            if (event.target === ticketModal) {
+                ticketModal.style.display = 'none';
+            }
+            if (event.target === bookingModal) {
+                bookingModal.style.display = 'none';
+            }
+        }
+
+        // Fetch cities and populate dropdown
+        async function fetchCities() {
+            try {
+                const response = await fetch('http://localhost:5001/cities');
+                cities = await response.json();
+                citySelect.innerHTML = '<option value="">Select City</option>' +
+                    cities.map(city => `<option value="${city.id}">${city.name}</option>`).join('');
+                console.log('Cities loaded:', cities);
+            } catch (error) {
+                console.error('Error fetching cities:', error);
+                showsList.innerHTML = '<p class="no-shows">Error loading cities. Please try again.</p>';
+            }
+        }
+
+        // Fetch shows for selected city
+        async function fetchShows(cityId) {
+            try {
+                console.log('Fetching shows for city:', cityId);
+                const response = await fetch(`http://localhost:5001/shows/${cityId}`);
+                shows = await response.json();
+                console.log('Shows received:', shows);
+                displayShows(shows);
+            } catch (error) {
+                console.error('Error fetching shows:', error);
+                showsList.innerHTML = '<p class="no-shows">Error loading shows. Please try again.</p>';
+            }
+        }
+
+        // Display shows in the grid
+        function displayShows(shows) {
+            console.log('Displaying shows:', shows);
+            if (!shows || shows.length === 0) {
+                showsList.innerHTML = '<p class="no-shows">No shows available</p>';
+                return;
+            }
+
+            showsList.innerHTML = shows.map(show => `
+                <div class="show-card">
+                    <img src="${show.imageUrl}" alt="${show.name}" onerror="this.src='https://via.placeholder.com/300x400?text=No+Image'">
+                    <div class="show-info">
+                        <h3>${show.name}</h3>
+                        <p class="theater">${getTheaterName(show.theaterId)}</p>
+                        <p class="date-time">${show.date} at ${show.time}</p>
+                        <p class="price">₹${show.price}</p>
+                        <p class="seats">Available Seats: ${show.seatLayout.totalSeats - (show.bookedSeats ? show.bookedSeats.length : 0)}</p>
+                        <button class="book-btn" onclick="openBookingModal('${show.id}')">Book Now</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Get theater name by ID
+        function getTheaterName(theaterId) {
+            for (const city of cities) {
+                const theater = city.theaters.find(t => t.id === theaterId);
+                if (theater) return theater.name;
+            }
+            return 'Unknown Theater';
+        }
+
+        // Event Listeners
+        closeBtn.onclick = closeModal;
+
+        citySelect.addEventListener('change', (e) => {
+            const cityId = e.target.value;
+            currentCityId = cityId;
+            console.log('City selected:', cityId);
+            if (cityId) {
+                fetchShows(cityId);
+            } else {
+                showsList.innerHTML = '<p class="no-shows">Please select a city to view shows</p>';
+            }
+        });
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Page loaded, initializing...');
+            
+            // Show the bookings section by default
+            document.getElementById('bookings').style.display = 'block';
+            
+            // Initialize cities and fetch bookings
+            fetchCities();
+            fetchBookings();
+        });
+
+        function openBookingModal(showId) {
+            console.log('Opening booking modal for show:', showId);
+            currentShowId = showId;
+            const selectedShow = shows.find(show => show.id === showId);
+            
+            if (!selectedShow) {
+                console.error('Show not found:', showId);
+                return;
+            }
+
+            // Reset selected seats and form
+            selectedSeats = [];
+            document.getElementById('bookingForm').reset();
+            
+            // Update show details in modal
+            document.getElementById('modalShowName').textContent = selectedShow.name;
+            document.getElementById('modalTheater').textContent = `Theater: ${getTheaterName(selectedShow.theaterId)}`;
+            document.getElementById('modalDateTime').textContent = `${selectedShow.date} at ${selectedShow.time}`;
+            document.getElementById('modalPrice').textContent = `Price: ₹${selectedShow.price}`;
+            
+            // Generate seat layout
+            const seatLayout = document.getElementById('seatLayout');
+            seatLayout.innerHTML = '';
+            
+            const rows = selectedShow.seatLayout.rows;
+            const cols = selectedShow.seatLayout.columns;
+            const bookedSeats = selectedShow.bookedSeats || [];
+            const premiumSeats = selectedShow.seatLayout.premiumSeats || [];
+            
+            for (let row = 0; row < rows; row++) {
+                const seatRow = document.createElement('div');
+                seatRow.className = 'seat-row';
+                
+                for (let col = 0; col < cols; col++) {
+                    const seatNumber = `${String.fromCharCode(65 + row)}${col + 1}`;
+                    const seat = document.createElement('div');
+                    seat.className = 'seat';
+                    seat.textContent = seatNumber;
+                    
+                    if (bookedSeats.includes(seatNumber)) {
+                        seat.classList.add('booked');
+                    } else {
+                        seat.classList.add('available');
+                        if (premiumSeats.includes(seatNumber)) {
+                            seat.classList.add('premium');
+                        }
+                        seat.onclick = () => toggleSeatSelection(seat, seatNumber, selectedShow.price);
+                    }
+                    
+                    seatRow.appendChild(seat);
+                }
+                seatLayout.appendChild(seatRow);
+            }
+            
+            // Show modal
+            modal.style.display = 'block';
+        }
+
+        function toggleSeatSelection(seatElement, seatNumber, price) {
+            const index = selectedSeats.indexOf(seatNumber);
+            if (index === -1) {
+                selectedSeats.push(seatNumber);
+                seatElement.classList.add('selected');
+            } else {
+                selectedSeats.splice(index, 1);
+                seatElement.classList.remove('selected');
+            }
+            
+            updateSelectedSeatsInfo(price);
+        }
+
+        function updateSelectedSeatsInfo(price) {
+            const selectedSeatsInfo = document.getElementById('selectedSeatsInfo');
+            if (selectedSeats.length === 0) {
+                selectedSeatsInfo.innerHTML = '<p>No seats selected</p>';
+                document.getElementById('bookBtn').disabled = true;
+            } else {
+                const totalAmount = selectedSeats.length * price;
+                selectedSeatsInfo.innerHTML = `
+                    <p>Selected Seats: ${selectedSeats.join(', ')}</p>
+                    <p>Total Amount: ₹${totalAmount}</p>
+                `;
+                document.getElementById('bookBtn').disabled = false;
+            }
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+            selectedSeats = [];
+        }
+
+        async function handleBooking(event) {
+            event.preventDefault();
+            
+            const form = document.getElementById('bookingForm');
+            const formData = new FormData(form);
+            const selectedShow = shows.find(show => show.id === currentShowId);
+
+            const bookingData = {
+                showId: currentShowId,
+                selectedSeats: selectedSeats,
+                userDetails: {
+                    name: formData.get('name'),
+                    email: formData.get('email'),
+                    phone: formData.get('phone'),
+                    userId: "user123"  // Add userId to the booking data
+                },
+                showDetails: {
+                    name: selectedShow.name,
+                    date: selectedShow.date,
+                    time: selectedShow.time,
+                    theaterId: selectedShow.theaterId,
+                    price: selectedShow.price
+                }
+            };
+
+            try {
+                console.log('Sending booking data:', bookingData);
+                const response = await fetch('http://localhost:5001/book-tickets', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(bookingData)
+                });
+                
+                const result = await response.json();
+                console.log('Booking response:', result);
+
+                if (response.ok) {
+                    alert('Booking successful! Your booking ID is: ' + result.bookingId);
+                    closeModal();
+                    // Refresh both shows and bookings
+                    if (currentCityId) {
+                        await fetchShows(currentCityId);
+                    }
+                    await fetchBookings(); // Refresh the bookings list
+                } else {
+                    alert('Booking failed: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error booking tickets:', error);
+                alert('Failed to book tickets. Please try again.');
+            }
+        }
+    </script>
+</body>
+</html> 

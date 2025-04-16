@@ -1,0 +1,155 @@
+[
+  {
+    "id": "show1",
+    "name": "Avengers: Endgame",
+    "date": "2024-03-20",
+    "time": "14:00",
+    "cityId": "city1",
+    "theaterId": "theater1",
+    "roomId": "room1",
+    "price": 350,
+    "description": "The epic conclusion to the Infinity Saga, where the Avengers assemble one final time to undo Thanos' actions.",
+    "status": "active",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BMTc5MDE2ODcwNV5BMl5BanBnXkFtZTgwMzI2NzQ2NzM@._V1_.jpg",
+    "seatLayout": {
+      "rows": 10,
+      "columns": 20,
+      "totalSeats": 200,
+      "premiumSeats": [
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5"
+      ],
+      "disabledSeats": [
+        "B10",
+        "C10"
+      ]
+    },
+    "bookedSeats": []
+  },
+  {
+    "id": "show2",
+    "name": "Inception",
+    "date": "2024-03-20",
+    "time": "18:30",
+    "cityId": "city1",
+    "theaterId": "theater1",
+    "roomId": "room2",
+    "price": 300,
+    "description": "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.",
+    "status": "active",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_.jpg",
+    "seatLayout": {
+      "rows": 8,
+      "columns": 15,
+      "totalSeats": 120,
+      "premiumSeats": [
+        "A1",
+        "A2",
+        "A3"
+      ],
+      "disabledSeats": [
+        "B8",
+        "C8"
+      ]
+    },
+    "bookedSeats": []
+  },
+  {
+    "id": "show3",
+    "name": "The Dark Knight",
+    "date": "2024-03-21",
+    "time": "15:00",
+    "cityId": "city1",
+    "theaterId": "theater2",
+    "roomId": "room3",
+    "price": 400,
+    "description": "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.",
+    "status": "active",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_.jpg",
+    "seatLayout": {
+      "rows": 9,
+      "columns": 20,
+      "totalSeats": 180,
+      "premiumSeats": [
+        "A1",
+        "A2",
+        "A3",
+        "A4"
+      ],
+      "disabledSeats": [
+        "B9",
+        "C9"
+      ]
+    },
+    "bookedSeats": []
+  },
+  {
+    "id": "show4",
+    "name": "Interstellar",
+    "date": "2024-03-21",
+    "time": "19:00",
+    "cityId": "city2",
+    "theaterId": "theater3",
+    "roomId": "room4",
+    "price": 450,
+    "description": "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
+    "status": "active",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BZjdkOTU3MDktN2IxOS00OGEyLWFmMjktY2FiMmZkNWIyODZiXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg",
+    "seatLayout": {
+      "rows": 11,
+      "columns": 20,
+      "totalSeats": 220,
+      "premiumSeats": [
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5"
+      ],
+      "disabledSeats": [
+        "B11",
+        "C11"
+      ]
+    },
+    "bookedSeats": [
+      "B1",
+      "B2"
+    ]
+  },
+  {
+    "id": "show5",
+    "name": "The Shawshank Redemption",
+    "date": "2024-03-22",
+    "time": "16:30",
+    "cityId": "city2",
+    "theaterId": "theater3",
+    "roomId": "room4",
+    "price": 250,
+    "description": "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
+    "status": "active",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BNDE3ODcxYzMtY2YzZC00NmNlLWJiNDMtZDViZWM2MzIxZDYwXkEyXkFqcGdeQXVyNjAwNDUxODI@._V1_.jpg",
+    "seatLayout": {
+      "rows": 11,
+      "columns": 20,
+      "totalSeats": 220,
+      "premiumSeats": [
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5"
+      ],
+      "disabledSeats": [
+        "B11",
+        "C11"
+      ]
+    },
+    "bookedSeats": [
+      "A8",
+      "A9"
+    ]
+  }
+]

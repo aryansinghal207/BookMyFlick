@@ -1,0 +1,52 @@
+[
+  {
+    "id": "city1",
+    "name": "Mumbai",
+    "theaters": [
+      {
+        "id": "theater1",
+        "name": "PVR IMAX Infinity",
+        "rooms": [
+          {
+            "id": "room1",
+            "name": "Screen 1",
+            "capacity": 200
+          },
+          {
+            "id": "room2",
+            "name": "Screen 2",
+            "capacity": 150
+          }
+        ]
+      },
+      {
+        "id": "theater2",
+        "name": "INOX Megaplex",
+        "rooms": [
+          {
+            "id": "room3",
+            "name": "Screen 1",
+            "capacity": 180
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "city2",
+    "name": "Delhi",
+    "theaters": [
+      {
+        "id": "theater3",
+        "name": "Cinepolis Unity One",
+        "rooms": [
+          {
+            "id": "room4",
+            "name": "Screen 1",
+            "capacity": 220
+          }
+        ]
+      }
+    ]
+  }
+] 

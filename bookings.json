@@ -1,0 +1,68 @@
+[
+  {
+    "bookingId": "2025-04-16T18:11:23.806Z",
+    "showId": "show5",
+    "showName": "The Shawshank Redemption",
+    "showDateTime": "2024-03-22 at 16:30",
+    "cityId": "city2",
+    "theaterId": "theater3",
+    "roomId": "room4",
+    "seats": [
+      "A8",
+      "A9"
+    ],
+    "totalAmount": 500,
+    "userDetails": {
+      "name": "Aryan Singhal",
+      "email": "aryansinghal207@gmail.com",
+      "phone": "8727976531",
+      "userId": "user123",
+      "bookingDate": "2025-04-16T18:11:23.806Z"
+    },
+    "status": "confirmed"
+  },
+  {
+    "bookingId": "2025-04-16T18:13:25.324Z",
+    "showId": "show1",
+    "showName": "Avengers: Endgame",
+    "showDateTime": "2024-03-20 at 14:00",
+    "cityId": "city1",
+    "theaterId": "theater1",
+    "roomId": "room1",
+    "seats": [
+      "D1",
+      "D2"
+    ],
+    "totalAmount": 700,
+    "userDetails": {
+      "name": "Aryan Singhal",
+      "email": "aryansinghal207@gmail.com",
+      "phone": "8727976531",
+      "userId": "user123",
+      "bookingDate": "2025-04-16T18:13:25.325Z"
+    },
+    "status": "cancelled"
+  },
+  {
+    "bookingId": "2025-04-16T18:17:04.056Z",
+    "showId": "show4",
+    "showName": "Interstellar",
+    "showDateTime": "2024-03-21 at 19:00",
+    "cityId": "city2",
+    "theaterId": "theater3",
+    "roomId": "room4",
+    "seats": [
+      "B1",
+      "B2"
+    ],
+    "totalAmount": 900,
+    "userDetails": {
+      "name": "Aryan Singhal",
+      "email": "aryansinghal207@gmail.com",
+      "phone": "8727976531",
+      "userId": "user123",
+      "bookingDate": "2025-04-16T18:17:04.056Z"
+    },
+    "status": "confirmed"
+  }
+]
