@@ -151,5 +151,62 @@
       "A8",
       "A9"
     ]
+  },
+  {
+    "id": "2025-04-17T04:59:48.463Z",
+    "name": "Dune: Part Two",
+    "date": "2025-04-25",
+    "time": "20:00",
+    "cityId": "2025-04-17T04:48:12.942Z",
+    "theaterId": "theater3",
+    "roomId": "room5",
+    "price": 350,
+    "description": "The next chapter in the epic sci-fi saga.",
+    "status": "active",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/en/5/52/Dune_Part_Two_poster.jpeg",
+    "seatLayout": {
+      "rows": 10,
+      "columns": 15,
+      "totalSeats": 150,
+      "premiumSeats": [
+        "A1",
+        "A2",
+        "A3"
+      ],
+      "disabledSeats": [
+        "B5",
+        "C5"
+      ]
+    },
+    "bookedSeats": []
+  },
+  {
+    "id": "2025-04-17T05:02:30.363Z",
+    "name": "Spider-Man: No Way Home",
+    "date": "2025-04-26",
+    "time": "17:30",
+    "cityId": "2025-04-17T04:48:12.942Z",
+    "theaterId": "theater3",
+    "roomId": "room6",
+    "price": 320,
+    "description": "Peter Parker teams up with multiverse Spider-Men to stop villains from across dimensions.",
+    "status": "active",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/en/0/00/Spider-Man_No_Way_Home_poster.jpg",
+    "seatLayout": {
+      "rows": 9,
+      "columns": 18,
+      "totalSeats": 162,
+      "premiumSeats": [
+        "A1",
+        "A2",
+        "A3",
+        "A4"
+      ],
+      "disabledSeats": [
+        "B6",
+        "C6"
+      ]
+    },
+    "bookedSeats": []
   }
 ]

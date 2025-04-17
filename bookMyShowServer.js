@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 const showsFile = path.join(__dirname, "shows.json");
-const bookingsFile = path.join(__dirname, "bookings.json");
+const bookingsFile = path.join(__dirname, "bookings.json"); 
 const citiesFile = path.join(__dirname, "cities.json");
 
 // File Operations
